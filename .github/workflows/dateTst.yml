@@ -1,0 +1,25 @@
+name: Current Date Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: "the release version of the build"
+        type: string
+        default: ''
+        required: false # Not required
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date
+        if: inputs.releaseVersion == ''
+        id: date1
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: "YYYY-MM-DD"
+
+      - name: Test
+        run: |
+          echo "${{ inputs.releaseVersion || steps.date1.outputs.time }}"
