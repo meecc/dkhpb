@@ -280,6 +280,9 @@
         timm==0.9.7 \
         omegaconf==2.3.0 \
         scipy==1.11.2 \
+        pandas>=1.2.0 \
+        # fastai >=2.6.0 && \
+        # fastbook \
         gradient==2.0.6
     RUN $PIP_INSTALL attrs==23.1.0
 
@@ -383,14 +386,6 @@
 
 
 
-# ==================================================================
-# Fast.ai
-# ------------------------------------------------------------------
-
-    # RUN python3 -m pip install --upgrade pip && \
-    #     python3 -m pip install --upgrade fastai >=2.6.0 && \
-    #     python3 -m pip install --upgrade fastbook && \
-        # python3 -m pip install --upgrade jupyterlab-git
 
 
 
