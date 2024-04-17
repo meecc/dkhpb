@@ -11,6 +11,26 @@ export SHELL=/bin/bash
 #     ref: paperspace/dsr4qbcrcg662pf:latest" > /notebooks/.gradient/settings.yaml
 
 
+
+
+# # https://www.cyberciti.biz/faq/ubuntu-linux-install-openssh-server/
+# # ==================================================================
+# # Enable the ssh service
+# # ------------------------------------------------------------------
+# sudo systemctl enable ssh
+# # Start the ssh service
+# sudo systemctl start ssh
+
+# # Configure firewall and open port 22
+# # You must configure the Ubuntu Linux firewall called ufw. Here is how open or allow port 22 when using ufw on Ubuntu:
+# sudo ufw allow ssh
+# sudo ufw enable
+# sudo ufw status
+
+
+
+
+
 ## run Once and Every
 if [ -f /storage/rnup/runOnce.sh ]; then
     . /storage/rnup/runOnce.sh
@@ -23,6 +43,12 @@ fi
 if [ -f /storage/rnup/runEvry2.sh ]; then
     . /storage/rnup/runEvry2.sh
 fi
+
+if [ -f /storage/rnup/runEvry3.sh ]; then
+    . /storage/rnup/runEvry3.sh
+fi
+
+
 
 
 

@@ -23,3 +23,18 @@ dkF
             runOnce.sh
             runEvry1.sh
             runEvry2.sh
+    failed on dl extract  large gd base dkImg
+
+
+
+25670417 2100
+try
+    derived fr base   do whole each   within dkF
+    set
+        jupyterlab = ">=4.1.6"
+        jupyter_contrib_nbextensions = ">=0.7.0"
+        jupyterlab-git = ">=0.50.0"
+        pyyaml 5.3.1  for gradient   as 5.4.1 known to fail
+    add
+        tree
+
