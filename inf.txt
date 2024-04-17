@@ -34,7 +34,16 @@ try
         jupyterlab = ">=4.1.6"
         jupyter_contrib_nbextensions = ">=0.7.0"
         jupyterlab-git = ">=0.50.0"
+            failed
+        jupyterlab==3.6.5
+        jupyter_contrib_nbextensions==0.7.0
+        jupyterlab-git==0.50.0
+
         pyyaml 5.3.1  for gradient   as 5.4.1 known to fail
     add
         tree
+
+25670417 2140
+off cuda cudnn  tf pt transformer  as run out of space on build
+
 

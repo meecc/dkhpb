@@ -161,61 +161,75 @@
     RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3
     ENV PATH=$PATH:/root/.local/bin    
 
-# ==================================================================
-# Installing CUDA packages (CUDA Toolkit 12.0 and CUDNN 8.9.7)
-# ------------------------------------------------------------------
-    RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin && \
-        mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600 && \
-        wget https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/cuda-repo-ubuntu2204-12-0-local_12.0.0-525.60.13-1_amd64.deb && \
-        dpkg -i cuda-repo-ubuntu2204-12-0-local_12.0.0-525.60.13-1_amd64.deb && \
-        cp /var/cuda-repo-ubuntu2204-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/ && \
-        apt-get update && \
-        $APT_INSTALL cuda && \  
-        rm cuda-repo-ubuntu2204-12-0-local_12.0.0-525.60.13-1_amd64.deb
-
-    # Installing CUDNN
-    RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub && \
-        add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /" && \
-        apt-get update && \
-        $APT_INSTALL libcudnn8=8.9.7.29-1+cuda12.2  \
-                     libcudnn8-dev=8.9.7.29-1+cuda12.2
 
 
-    ENV PATH=$PATH:/usr/local/cuda/bin
-    ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 
-# ==================================================================
-# PyTorch
-# ------------------------------------------------------------------
-
-    # Based on https://pytorch.org/get-started/locally/
-
-    RUN $PIP_INSTALL torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --extra-index-url https://download.pytorch.org/whl/cu121
-
-# ==================================================================
-# TensorFlow
-# ------------------------------------------------------------------
-
-    # Based on https://www.tensorflow.org/install/pip
-
-    RUN $PIP_INSTALL tensorflow==2.15.0 && \
 
 
-# ==================================================================
-# Hugging Face
-# ------------------------------------------------------------------
+
+# # ==================================================================
+# # Installing CUDA packages (CUDA Toolkit 12.0 and CUDNN 8.9.7)
+# # ------------------------------------------------------------------
+#     RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin && \
+#         mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600 && \
+#         wget https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/cuda-repo-ubuntu2204-12-0-local_12.0.0-525.60.13-1_amd64.deb && \
+#         dpkg -i cuda-repo-ubuntu2204-12-0-local_12.0.0-525.60.13-1_amd64.deb && \
+#         cp /var/cuda-repo-ubuntu2204-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/ && \
+#         apt-get update && \
+#         $APT_INSTALL cuda && \  
+#         rm cuda-repo-ubuntu2204-12-0-local_12.0.0-525.60.13-1_amd64.deb
+
+#     # Installing CUDNN
+#     RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub && \
+#         add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /" && \
+#         apt-get update && \
+#         $APT_INSTALL libcudnn8=8.9.7.29-1+cuda12.2  \
+#                      libcudnn8-dev=8.9.7.29-1+cuda12.2
+
+
+#     ENV PATH=$PATH:/usr/local/cuda/bin
+#     ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+
+# # ==================================================================
+# # PyTorch
+# # ------------------------------------------------------------------
+
+#     # Based on https://pytorch.org/get-started/locally/
+
+#     RUN $PIP_INSTALL torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --extra-index-url https://download.pytorch.org/whl/cu121
+
+# # ==================================================================
+# # TensorFlow
+# # ------------------------------------------------------------------
+
+#     # Based on https://www.tensorflow.org/install/pip
+
+#     RUN $PIP_INSTALL tensorflow==2.15.0 && \
+
+
+# # ==================================================================
+# # Hugging Face
+# # ------------------------------------------------------------------
     
-    # Based on https://huggingface.co/docs/transformers/installation
-    # Based on https://huggingface.co/docs/datasets/installation
+#     # Based on https://huggingface.co/docs/transformers/installation
+#     # Based on https://huggingface.co/docs/datasets/installation
 
-    $PIP_INSTALL transformers==4.35.2 \
-        datasets==2.14.5 \
-        peft==0.6.2 \
-        tokenizers \
-        accelerate==0.24.1 \
-        diffusers==0.21.4 \
-        safetensors==0.4.0 && \
+#     $PIP_INSTALL transformers==4.35.2 \
+#         datasets==2.14.5 \
+#         peft==0.6.2 \
+#         tokenizers \
+#         accelerate==0.24.1 \
+#         diffusers==0.21.4 \
+#         safetensors==0.4.0
+
+
+
+
+
+
+
 
 
 # ==================================================================
@@ -224,8 +238,13 @@
 
     # Based on https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html#pip
 
-    $PIP_INSTALL jupyterlab==4.1.6
-
+    RUN $PIP_INSTALL \
+        jupyterlab==3.6.5 \
+        # notebook>=6.0 \
+        # ipykernel>=6.5 \
+        invoke >=2.0 \
+        hydra-zen >=0.10 \
+        python-dotenv >=1.0 
 
 # ==================================================================
 # Additional Python Packages
@@ -274,14 +293,6 @@
         default-jdk
 
 
-# ==================================================================
-# CMake
-# ------------------------------------------------------------------
-
-    RUN $GIT_CLONE https://github.com/Kitware/CMake ~/cmake && \
-        cd ~/cmake && \
-        ./bootstrap && \
-        make -j"$(nproc)" install
 
 
 # ==================================================================
@@ -290,11 +301,19 @@
 
     RUN curl -sL https://deb.nodesource.com/setup_20.x | bash  && \
         $APT_INSTALL nodejs  && \
-        $PIP_INSTALL jupyter_contrib_nbextensions==0.7.0 jupyterlab-git==0.50.0 && \
+        $PIP_INSTALL jupyter_contrib_nbextensions==0.7.0 jupyterlab-git==0.43.0 && \
         jupyter contrib nbextension install --user
                 
 
 
+# ==================================================================
+# CMake
+# ------------------------------------------------------------------
+
+    # RUN $GIT_CLONE https://github.com/Kitware/CMake ~/cmake && \
+    #     cd ~/cmake && \
+    #     ./bootstrap && \
+    #     make -j"$(nproc)" install
 
 
 
@@ -368,9 +387,9 @@
 # Fast.ai
 # ------------------------------------------------------------------
 
-    RUN python3 -m pip install --upgrade pip && \
-        python3 -m pip install --upgrade fastai >=2.6.0 && \
-        python3 -m pip install --upgrade fastbook && \
+    # RUN python3 -m pip install --upgrade pip && \
+    #     python3 -m pip install --upgrade fastai >=2.6.0 && \
+    #     python3 -m pip install --upgrade fastbook && \
         # python3 -m pip install --upgrade jupyterlab-git
 
 
