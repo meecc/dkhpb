@@ -2,6 +2,12 @@ name: Build Docker Container
 
 on:
   workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: "the release version of the build"
+        type: string
+        default: ''
+        required: false # Not required if none will use curDate
   # push:
   #   branches:
   #     - main
@@ -10,6 +16,14 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: Get current date
+        if: inputs.releaseVersion == ''
+        id: date1
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          # format: "YYYY-MM-DD"
+          format: "YYYY_MM_DDTHH_mm_ss"
+
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -27,4 +41,12 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: megochokedk/tstdk:latest
+          # tags: megochokedk/tstdk:latest
+          tags: megochokedk/tstdk:${{ inputs.releaseVersion || steps.date1.outputs.time }}
+
+
+
+
+
+
+

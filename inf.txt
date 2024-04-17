@@ -1,4 +1,8 @@
 
+
+dkhpb
+    dockerHub publish
+
 25670416
 fr https://medium.com/@wasdsro/tutorial-building-a-docker-container-via-github-actions-8636bdc931b1
 

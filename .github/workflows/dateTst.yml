@@ -7,7 +7,7 @@ on:
         description: "the release version of the build"
         type: string
         default: ''
-        required: false # Not required
+        required: false # Not required if none will use curDate
 
 jobs:
   test:
@@ -18,7 +18,8 @@ jobs:
         id: date1
         uses: Kaven-Universe/github-action-current-date-time@v1
         with:
-          format: "YYYY-MM-DD"
+          # format: "YYYY-MM-DD"
+          format: "YYYY_MM_DDTHH_mm_ss_SSS"
 
       - name: Test
         run: |
